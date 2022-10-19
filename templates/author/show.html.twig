@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Author{% endblock %}
+
+{% block body %}
+    <h1>Author</h1>
+    <div class="container container-table">
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ author.id }}</td>
+            </tr>
+            <tr>
+                <th>AuthorName</th>
+                <td>{{ author.authorName }}</td>
+            </tr>
+            <tr>
+                <th>Birthday</th>
+                <td>{{ author.birthday ? author.birthday|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>AuthorName</th>
+                <td>{{ author.description }}</td>
+            </tr>
+
+            <tr>
+                <th>List of Books</th>
+                <td>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Book Name</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for book in author.books %}
+                            <tr>
+                                <td>{{ book.id }}</td>
+                                <td>{{ book.BookName }}</td>
+                                <td>{{ book.price }}</td>
+                                <td>{{ book.category.name }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a class="btn btn-secondary" href="{{ path('app_author_index') }}">back to list</a>
+
+        <a class="btn btn-info" href="{{ path('app_author_edit', {'id': author.id}) }}">edit</a>
+
+        {{ include('author/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

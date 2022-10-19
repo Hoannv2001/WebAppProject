@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Author index{% endblock %}
+
+{% block body %}
+    <h1>Author index</h1>
+    <div class="container container-table">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>AuthorName</th>
+                <th>Birthday</th>
+                <th>Description</th>
+                <th>actions</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for author in authors %}
+                <tr>
+                    <td>{{ author.id }}</td>
+                    <td>{{ author.authorName }}</td>
+                    <td>{{ author.birthday ? author.birthday|date('Y-m-d') : '' }}</td>
+                    <td>{{ author.description }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('app_author_show', {'id': author.id}) }}">show</a>
+                        <a class="btn btn-info" href="{{ path('app_author_edit', {'id': author.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a class="btn btn-warning" href="{{ path('app_author_new') }}">Create new</a>
+    </div>
+{% endblock %}

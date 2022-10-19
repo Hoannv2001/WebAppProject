@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <h1>Home Index</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <div class="card" style="height: 300px">
+                <h5 class="card-header">Books List</h5>
+                <div class="card-body">
+                    <i class="bi bi-journal-album" style="font-size:32px"></i>
+                    <h5 class="card-title">Manage books in the store</h5>
+{#                    <a>{{ countOfBook }}</a>#}
+                    <p class="card-text">The total number of books you have in store.</p>
+                    <h3 class="text-danger">{{ countOfBook }}</h3>
+                    <a href="{{ path('app_book_index') }}" class="btn btn-primary">View Book</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card" style="height: 300px">
+                <h5 class="card-header">Listed Category</h5>
+                <div class="card-body">
+                    <i class="bi bi-card-list" style="font-size:32px"></i>
+                    <h5 class="card-title">Manage Category in the Store</h5>
+                    <p class="card-text">The total number of category you have in store.</p>
+                    <h3 class="text-danger">{{ countOfCategory }}</h3>
+                    <a href="{{ path('app_category_index') }}" class="btn btn-primary">View Category</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card" style="height: 300px">
+                <h5 class="card-header">Author List</h5>
+                <div class="card-body">
+                    <i class="bi bi-person-circle" style="font-size:32px"></i>
+                    <h5 class="card-title">Manage Author in the store</h5>
+                    <p class="card-text">The total number of author you have in store.</p>
+                    <h3 class="text-danger">{{ countOfAuthor }}</h3>
+                    <a href="{{ path('app_author_index') }}" class="btn btn-primary">View Author</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card" style="height: 300px">
+                <h5 class="card-header">Customer</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

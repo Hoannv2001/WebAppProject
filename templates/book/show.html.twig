@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book{% endblock %}
+
+{% block body %}
+    <h1>Book</h1>
+    <div class="container container-table">
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ book.id }}</td>
+            </tr>
+            <tr>
+                <th>Book Name</th>
+                <td>{{ book.BookName }}</td>
+            </tr>
+            <tr>
+                <th>Author Name</th>
+                <td>{{ book.author.authorName }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td>{{ book.category.name }}</td>
+            </tr>
+{#            <tr>#}
+{#                <th>Issue Book</th>#}
+{#                <td>#}
+{#                    <table class="table">#}
+{#                        <thead>#}
+{#                        <tr>#}
+{#                            <th>Id</th>#}
+{#                        </tr>#}
+{#                        </thead>#}
+{#                        <tbody>#}
+{#                        {% for book1 in book.issueBook %}#}
+{#                            <tr>#}
+{#                                <td>{{ book1.id }}</td>#}
+{#                            </tr>#}
+{#                        {% else %}#}
+{#                            <tr>#}
+{#                                <td colspan="4">no records found</td>#}
+{#                            </tr>#}
+{#                        {% endfor %}#}
+{#                        </tbody>#}
+{#                    </table>#}
+{#                    #}{#                {% for book in books %}#}
+{#                    #}{#                    <td>{{ book.issueBook.id}}</td>#}
+{#                    #}{#                {% else %}#}
+
+{#                    #}{#                    <td colspan="4">no records found</td>#}
+
+{#                    #}{#                {% endfor %}#}
+{#            </tr>#}
+            <tr>
+                <th>Price</th>
+                <td>{{ book.price }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a class="btn btn-secondary" href="{{ path('app_book_index') }}">back to list</a>
+
+        <a class="btn btn-info" href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
+    </div>
+
+    {{ include('book/_delete_form.html.twig') }}
+{% endblock %}

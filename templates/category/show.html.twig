@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category{% endblock %}
+
+{% block body %}
+    <h1>Category</h1>
+    <div class="container container-table">
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ category.id }}</td>
+            </tr>
+            <tr>
+                <th>CategoryName</th>
+                <td>{{ category.name }}</td>
+            </tr>
+            <tr>
+                <th>DescribeName</th>
+                <td>{{ category.description }}</td>
+            </tr>
+            <tr>
+                <th>List of Books</th>
+                <td>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Book Name</th>
+                            <th>Price</th>
+                            <th>Author Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for book in category.books %}
+                            <tr>
+                                <td>{{ book.id }}</td>
+                                <td>{{ book.BookName }}</td>
+                                <td>{{ book.price }}</td>
+                                <td>{{ book.author.authorName }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tbody>
+        </table>
+
+        <a class="btn btn-secondary" href="{{ path('app_category_index') }}">back to list</a>
+
+        <a class="btn btn-info" href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+    </div>
+
+    {{ include('category/_delete_form.html.twig') }}
+{% endblock %}
