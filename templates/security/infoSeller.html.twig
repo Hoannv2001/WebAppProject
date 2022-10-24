@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book index{% endblock %}
+
+{% block body %}
+    <div class="container container-table">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Email</th>
+                <th>FullName</th>
+                <th>Phone Number</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for u in users %}
+                {#                {% if is_granted('ROLE_ADMIN') %}#}
+                <tr>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.fullName }}</td>
+                    <td>{{ u.phoneNumber }}</td>
+                </tr>
+                {#                {% endif %}#}
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

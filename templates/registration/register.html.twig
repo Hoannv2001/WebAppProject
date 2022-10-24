@@ -11,6 +11,9 @@
             label: 'Password'
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_row(registrationForm.roles) }}
+        {{ form_row(registrationForm.fullName) }}
+        {{ form_row(registrationForm.phoneNumber) }}
         <button type="submit" class="btn btn-primary btn-sm">Register</button>
         {{ form_end(registrationForm) }}
     </div>

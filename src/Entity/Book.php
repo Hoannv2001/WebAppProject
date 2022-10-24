@@ -51,9 +51,9 @@ class Book
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="books")
+     * @ORM\JoinColumn(name="email", referencedColumnName="email")
      */
-    private $owner;
-
+    private $user;
 
     public function __construct()
     {
@@ -152,14 +152,14 @@ class Book
         return $this;
     }
 
-    public function getOwner(): ?User
+    public function getUser(): ?User
     {
-        return $this->owner;
+        return $this->user;
     }
 
-    public function setOwner(?User $owner): self
+    public function setUser(?User $user): self
     {
-        $this->owner = $owner;
+        $this->user = $user;
 
         return $this;
     }

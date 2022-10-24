@@ -48,6 +48,34 @@ class BookRepository extends ServiceEntityRepository
         return $qb->getQuery();
 
     }
+    public function selectDataBookAdmin($user):Query
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('b')
+            ->from('App:Book', 'b')
+            ->where('b.user = :user')
+            ->setParameter('user', $user);
+        return $qb->getQuery();
+    }
+    public  function findAllPriceRange($minPrice,$maxPrice,$cat): Query
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('b')
+            ->from('App:Book', 'b');
+        if (is_null($minPrice) || empty($minPrice)){
+            $minPrice=0;
+        }
+        $qb->where('b.price >=' . $minPrice);
+        if (!(is_null($maxPrice) || empty($maxPrice))){
+            $qb->andWhere('b.price <=' . $maxPrice);
+        }
+        if (!(is_null($cat)||empty($cat))){
+            $qb->andWhere('b.category =' . $cat);
+        }
+        return $qb->getQuery();
+    }
 
 //    /**
 //     * @return Book[] Returns an array of Book objects

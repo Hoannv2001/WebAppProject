@@ -22,7 +22,10 @@
                     <td>{{ category.description }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                        <a class="btn btn-info" href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+                        {% if is_granted('ROLE_ADMIN')%}
+                            <a class="btn btn-info" href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+                        {% else %}
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}
@@ -32,7 +35,9 @@
             {% endfor %}
             </tbody>
         </table>
+        {% if is_granted('ROLE_ADMIN')%}
+            <a class="btn btn-warning" href="{{ path('app_category_new') }}">Create new</a>
 
-        <a class="btn btn-warning" href="{{ path('app_category_new') }}">Create new</a>
+        {% endif %}
     </div>
 {% endblock %}

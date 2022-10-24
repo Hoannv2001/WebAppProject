@@ -23,45 +23,21 @@
                 <th>Category</th>
                 <td>{{ book.category.name }}</td>
             </tr>
-{#            <tr>#}
-{#                <th>Issue Book</th>#}
-{#                <td>#}
-{#                    <table class="table">#}
-{#                        <thead>#}
-{#                        <tr>#}
-{#                            <th>Id</th>#}
-{#                        </tr>#}
-{#                        </thead>#}
-{#                        <tbody>#}
-{#                        {% for book1 in book.issueBook %}#}
-{#                            <tr>#}
-{#                                <td>{{ book1.id }}</td>#}
-{#                            </tr>#}
-{#                        {% else %}#}
-{#                            <tr>#}
-{#                                <td colspan="4">no records found</td>#}
-{#                            </tr>#}
-{#                        {% endfor %}#}
-{#                        </tbody>#}
-{#                    </table>#}
-{#                    #}{#                {% for book in books %}#}
-{#                    #}{#                    <td>{{ book.issueBook.id}}</td>#}
-{#                    #}{#                {% else %}#}
-
-{#                    #}{#                    <td colspan="4">no records found</td>#}
-
-{#                    #}{#                {% endfor %}#}
-{#            </tr>#}
             <tr>
                 <th>Price</th>
                 <td>{{ book.price }}</td>
+            </tr>
+            <tr>
+                <th>Seller</th>
+                <th>{{ book.user.fullName }}</th>
             </tr>
             </tbody>
         </table>
 
         <a class="btn btn-secondary" href="{{ path('app_book_index') }}">back to list</a>
-
-        <a class="btn btn-info" href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
+        {% if not is_granted('ROLE_CUSTOMER')%}
+            <a class="btn btn-info" href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>
+        {% endif %}
     </div>
 
     {{ include('book/_delete_form.html.twig') }}

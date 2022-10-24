@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20221019151850 extends AbstractMigration
+final class Version20221023150956 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,16 @@ final class Version20221019151850 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\', password VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE book ADD email VARCHAR(180) DEFAULT NULL');
+        $this->addSql('ALTER TABLE book ADD CONSTRAINT FK_CBE5A331E7927C74 FOREIGN KEY (email) REFERENCES user (email)');
+        $this->addSql('CREATE INDEX IDX_CBE5A331E7927C74 ON book (email)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE user');
+        $this->addSql('ALTER TABLE book DROP FOREIGN KEY FK_CBE5A331E7927C74');
+        $this->addSql('DROP INDEX IDX_CBE5A331E7927C74 ON book');
+        $this->addSql('ALTER TABLE book DROP email');
     }
 }

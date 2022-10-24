@@ -51,8 +51,9 @@
         </table>
 
         <a class="btn btn-secondary" href="{{ path('app_category_index') }}">back to list</a>
-
-        <a class="btn btn-info" href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+        {% if is_granted('ROLE_ADMIN')%}
+            <a class="btn btn-info" href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+        {% endif %}
     </div>
 
     {{ include('category/_delete_form.html.twig') }}

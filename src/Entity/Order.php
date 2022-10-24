@@ -40,6 +40,12 @@ class Order
      */
     private $orderBook;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
+     * @ORM\JoinColumn(name="customerEmail", referencedColumnName="email")
+     */
+    private $customer;
+
     public function __construct()
     {
         $this->orderBook = new ArrayCollection();
@@ -106,6 +112,18 @@ class Order
     public function removeOrderBook(Book $orderBook): self
     {
         $this->orderBook->removeElement($orderBook);
+
+        return $this;
+    }
+
+    public function getCustomer(): ?User
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?User $customer): self
+    {
+        $this->customer = $customer;
 
         return $this;
     }

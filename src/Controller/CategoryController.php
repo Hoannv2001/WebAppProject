@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Entity\Category;
 use App\Form\CategoryType;
+use App\Repository\AuthorRepository;
 use App\Repository\CategoryRepository;
 use phpDocumentor\Reflection\Types\This;
 use Psr\Log\LoggerInterface;
@@ -36,13 +37,9 @@ class CategoryController extends AbstractController
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
-        /**@var\App\Entity\User $user */
+
         $user = $this->getUser();
-        if (is_null($user)){
-            $logger->info("no");
-        }else{
-            $logger->info("yess".$user->getUserIdentifier());
-        }
+
         if (is_null($user)){
             return $this->redirectToRoute('app_login',[],Response::HTTP_SEE_OTHER);
         }
@@ -71,18 +68,11 @@ class CategoryController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_category_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Category $category,Book $book,
-                         LoggerInterface $logger,CategoryRepository $categoryRepository): Response
+    public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
-        $user = $this->getUser();
-        if (is_null($user)){
-            return $this->redirectToRoute('app_login',[],Response::HTTP_SEE_OTHER);
-        }
-        elseif ($book->getCategory() ==$category->getId()){
-            return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
-        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $categoryRepository->add($category, true);
 
@@ -100,12 +90,6 @@ class CategoryController extends AbstractController
      */
     public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
     {
-        $user = $this->getUser();
-        if (is_null($user)){
-            return $this->redirectToRoute('app_login',[],Response::HTTP_SEE_OTHER);
-        }elseif ($user !== $category->getOwner()){
-            return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
-        }
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $categoryRepository->remove($category, true);
         }

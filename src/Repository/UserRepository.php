@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -54,6 +55,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
 
         $this->add($user, true);
+    }
+    public function selectInfoUser(): Query
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('t')
+            ->from('App:User', 't')
+            ->where('t.roles LIKE :roles')
+            ->setParameter('roles', '%"ROLE_CUSTOMER"%');
+        return $qb->getQuery();
+    }
+    public function selectInfoSeller(): Query
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('t')
+            ->from('App:User', 't')
+            ->where('t.roles LIKE :roles')
+            ->setParameter('roles', '%"ROLE_SELLER"%');
+        return $qb->getQuery();
     }
 
 //    /**
