@@ -17,7 +17,7 @@
 
                     Min Price: <input type="number" name="minPrice"><br>
                     Max Price: <input type="number" name="maxPrice"><br>
-                    <input type="submit" value="Filter" class="btn btn-primary"> |
+                    <input type="submit" value="priceBook" class="btn btn-primary"> |
                     <a href="{{ path('app_book_index') }}"
                        class="btn btn-primary">Reset</a>
                 </form>
@@ -25,24 +25,43 @@
             <div class="col-9">
                 <div class="container">
                     <h4>Product Listing</h4>
-                    <div class="row row-cols-1 row-cols-md-4 g-4">
-                        {% for book in books %}
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img class="card-img-top" src="{{ asset('images/logo.jpg') }}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ book.bookName }}</h5>
-                                        <h6 class="card-subtitle">Category: {{ book.category.name }}</h6>
-                                        <p>Price: {{ book.price }}</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a href="{{ path('app_book_show', {'id': book.id}) }}"
-                                           class="btn btn-primary">Show</a>
+                        <div class="row row-cols-1 row-cols-md-4 g-4">
+                            {% for book in books %}
+                            <form action={{ path('app_order_new') }} method="get">
+                                <div class="col">
+                                    <div class="card h-100">
+                                        <img class="card-img-top" src="{{ asset('images/logo.jpg') }}">
+                                        <div class="card-body">
+                                            <input type="hidden" name="idBook" value="{{ book.id }}">
+                                            <h5 class="card-title">{{ book.bookName }}</h5>
+                                            <h6 class="card-subtitle">Category: {{ book.category.name }}</h6>
+                                            <input type="hidden" name="priceOfBook" value="{{ book.price }}">Price: {{ book.price }}<br>
+                                        </div>
+                                        <div  >
+                                            <div class="d-flex mb-4" style="max-width: 200px">
+                                                <button class="btn btn-primary px-3 me-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" style="">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+
+                                                <div class="form-outline">
+                                                    <input id="form1" min="0" name="quantity" value="0" type="number" class="form-control active">
+                                                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 55.2px;"></div><div class="form-notch-trailing"></div></div></div>
+                                                <label ></label>
+                                                <button class="btn btn-primary px-3 ms-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" style="">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="{{ path('app_book_show', {'id': book.id}) }}"
+                                               class="btn btn-primary">Show</a>
+                                            <input type="submit" value="Add Cart" class="btn btn-primary">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+                            </form>
+                            {% endfor %}
+                        </div>
                     <div class="row mt-2">
                         <div style="display:flex;text-align:center;justify-content:center">
                             <nav aria-label="Page navigation">

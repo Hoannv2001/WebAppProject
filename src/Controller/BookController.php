@@ -21,14 +21,19 @@ class BookController extends AbstractController
     /**
      * @Route("/list/{page}", name="app_book_index", methods={"GET"})
      */
-    public function index( Request $request, BookRepository $bookRepository,
+    public function index( Request $request, BookRepository $bookRepository,LoggerInterface $logger,
                            int $page = 1 ): Response
     {
-        $user=$this->getUser();
+        $quantity = (int)$request->query->get('_token');
 
         $minPrice = $request->query->get('minPrice');
         $maxPrice = $request->query->get('maxPrice');
         $cat = $request->query->get('category');
+        if (is_null($minPrice))
+            $logger->info("User is not logged in");
+        else
+            $logger->info("User's email quality ".$minPrice);
+        $user=$this->getUser();
         if(!(is_null($cat)||empty($cat))){
             $selectedCat=$cat;
         }else

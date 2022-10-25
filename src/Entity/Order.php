@@ -36,20 +36,11 @@ class Order
     private $dateOrder;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Book::class, inversedBy="orders")
-     */
-    private $orderBook;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
      * @ORM\JoinColumn(name="customerEmail", referencedColumnName="email")
      */
     private $customer;
 
-    public function __construct()
-    {
-        $this->orderBook = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -88,30 +79,6 @@ class Order
     public function setDateOrder(\DateTimeInterface $dateOrder): self
     {
         $this->dateOrder = $dateOrder;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Book>
-     */
-    public function getOrderBook(): Collection
-    {
-        return $this->orderBook;
-    }
-
-    public function addOrderBook(Book $orderBook): self
-    {
-        if (!$this->orderBook->contains($orderBook)) {
-            $this->orderBook[] = $orderBook;
-        }
-
-        return $this;
-    }
-
-    public function removeOrderBook(Book $orderBook): self
-    {
-        $this->orderBook->removeElement($orderBook);
 
         return $this;
     }

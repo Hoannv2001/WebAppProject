@@ -76,6 +76,15 @@ class BookRepository extends ServiceEntityRepository
         }
         return $qb->getQuery();
     }
+    public function findPriceOfId($idBook):Query
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('b')
+            ->from('App:Book', 'b')
+            ->where('b.price =' . $idBook);
+        return $qb->getQuery();
+    }
 
 //    /**
 //     * @return Book[] Returns an array of Book objects

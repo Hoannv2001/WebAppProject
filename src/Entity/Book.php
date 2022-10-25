@@ -45,20 +45,10 @@ class Book
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Order::class, mappedBy="orderBook")
-     */
-    private $orders;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="books")
      * @ORM\JoinColumn(name="email", referencedColumnName="email")
      */
     private $user;
-
-    public function __construct()
-    {
-        $this->orders = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -121,33 +111,6 @@ class Book
     public function setAuthor(?Author $author): self
     {
         $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Order>
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Order $order): self
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->addOrderBook($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrder(Order $order): self
-    {
-        if ($this->orders->removeElement($order)) {
-            $order->removeOrderBook($this);
-        }
 
         return $this;
     }

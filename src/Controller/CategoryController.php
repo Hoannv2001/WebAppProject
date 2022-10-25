@@ -35,6 +35,7 @@ class CategoryController extends AbstractController
     public function new(Request $request, CategoryRepository $categoryRepository, LoggerInterface $logger): Response
     {
         $category = new Category();
+
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
@@ -88,8 +89,10 @@ class CategoryController extends AbstractController
     /**
      * @Route("/{id}", name="app_category_delete", methods={"POST"})
      */
-    public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    public function delete(Request $request, Category $category,
+                           CategoryRepository $categoryRepository, LoggerInterface $logger): Response
     {
+        $user=$this->getUser();
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $categoryRepository->remove($category, true);
         }
