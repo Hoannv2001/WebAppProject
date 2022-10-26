@@ -41,7 +41,9 @@
                     <li class="nav-item"><a href="{{ path('app_book_index') }}" class="nav-link">Products</a></li>
                 {% endif %}
                 {% if is_granted('ROLE_CUSTOMER')%}
-                    <li class="nav-item"><a href="{{ path('app_cart') }}" class="nav-link">Cart</a></li>
+                    <li class="nav-item">
+                        <input type="hidden" ><a href="{{ path('app_review_cart') }}" class="nav-link">Cart</a><br>
+                    </li>
                 {% endif %}
                 {% if app.user %}
                     <li class="nav-item"><a class="nav-link">{{ app.user.fullName }}</a></li>

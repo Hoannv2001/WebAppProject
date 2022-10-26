@@ -41,6 +41,16 @@ class Order
      */
     private $customer;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderItems::class, mappedBy="orderB")
+     */
+    private $orderItems;
+
+    public function __construct()
+    {
+        $this->orderItems = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -91,6 +101,36 @@ class Order
     public function setCustomer(?User $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItems>
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItems $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setOrderB($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItems $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getOrderB() === $this) {
+                $orderItem->setOrderB(null);
+            }
+        }
 
         return $this;
     }

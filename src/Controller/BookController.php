@@ -38,6 +38,22 @@ class BookController extends AbstractController
             $selectedCat=$cat;
         }else
             $selectedCat='';
+
+        $user = $this->getUser();
+        $dayOrder =  new \DateTime();
+        $quantity = $request->query->get('quantity');
+        $idBook = (int)$request->query->get('idBook');
+        $priceBook = (float)$request->query->get('priceOfBook');
+        $totalPrice = $quantity * $priceBook;
+        if (is_null($totalPrice))
+            $logger->info("User nooooo");
+        else
+            $logger->info("User's email quality ".$totalPrice);
+        $logger->info($idBook);
+        $logger->info($priceBook);
+        $logger->info($quantity);
+        $logger->info($user->getUserIdentifier());
+
         $temQuery = $bookRepository->findAllPriceRange($minPrice, $maxPrice, $cat);
         $pageSize = 4;
         $paginator = new Paginator($temQuery);
@@ -47,9 +63,7 @@ class BookController extends AbstractController
             ->getQuery()
             ->setFirstResult($pageSize * ($page-1)) // set the offset
             ->setMaxResults($pageSize);
-
         $temQuery1 = $bookRepository->selectDataBookAdmin($user);
-
         $hasAccess = $this->isGranted('ROLE_SELLER');
         $hasAccessCus = $this->isGranted('ROLE_CUSTOMER');
         $hasAccessAdmin = $this->isGranted('ROLE_ADMIN');
