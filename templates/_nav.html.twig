@@ -42,7 +42,7 @@
                 {% endif %}
                 {% if is_granted('ROLE_CUSTOMER')%}
                     <li class="nav-item">
-                        <input type="hidden" ><a href="{{ path('app_review_cart') }}" class="nav-link">Cart</a><br>
+                        <input type="hidden"><a href="{{ path('app_review_cart') }}" class="nav-link">Cart </a><br>
                     </li>
                 {% endif %}
                 {% if app.user %}

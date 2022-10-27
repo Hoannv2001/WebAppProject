@@ -59,11 +59,13 @@ class BookController extends AbstractController
         $paginator = new Paginator($temQuery);
         $totalItems = count($paginator);
         $numOfPages = ceil($totalItems/$pageSize);
+
         $tempQuery = $paginator
             ->getQuery()
             ->setFirstResult($pageSize * ($page-1)) // set the offset
             ->setMaxResults($pageSize);
         $temQuery1 = $bookRepository->selectDataBookAdmin($user);
+
         $hasAccess = $this->isGranted('ROLE_SELLER');
         $hasAccessCus = $this->isGranted('ROLE_CUSTOMER');
         $hasAccessAdmin = $this->isGranted('ROLE_ADMIN');

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartTetsController!{% endblock %}
+
+{% block body %}
+    <style>
+        .a {
+            background-color:red;
+            height: 33px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .b {
+            background-color:#00AA00;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    </style>
+    <body>
+        <div class="a" data-el="1">1</div>
+        <div class="b" data-el="no-click-handler">2</div>
+        <div class="a" data-el="3">11</div>
+    </body>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/test.js') }}"></script>
+{% endblock %}

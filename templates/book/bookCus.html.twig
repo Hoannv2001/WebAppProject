@@ -1,23 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book index{% endblock %}
-
 {% block body %}
+    <div class="position-relative m-4">
+        <input type="hidden" value="cart">
+
+    </div>
+<div class="container">
     <h1>Book index</h1>
     <div class="container-md">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+{#            <button class="btn btn-primary me-md-2" type="button">Button</button>#}
+            <a href="{{ path('app_review_cart')}}" class="btn btn-danger rounded-pill" style="width: 3rem; height:3rem;" type="button">
+                <i class="bi bi-cart-check"></i>
+                    <h3 class="text-dark">{{ app.request.session.get("count")}}</h3>
+
+            </a>
+        </div>
         <div class="row">
             <div class="col-3">
                 <form action={{ path('app_book_index') }} method="get">
                     Category:
-                    <select name="category">
-                        {#                        <option value="1" {{ (selectedCat=="English") ? 'selected' }}>English</option>#}
-                        {#                        <option value="2" {{ (selectedCat=="Toan") ? 'selected' }}>Toan</option>#}
-                        {#                        <option value="2" {{ (selectedCat=="") ? 'selected' }}>All</option>#}
+                    <select >
+                        <option value="1" {{ (selectedCat=="English") ? 'selected' }}>English</option>
+                        <option value="2" {{ (selectedCat=="Toan") ? 'selected' }}>Toan</option>
+                        <option value="2" {{ (selectedCat=="") ? 'selected' }}>All</option>
                     </select><br>
 
                     Min Price: <input type="number" name="minPrice"><br>
                     Max Price: <input type="number" name="maxPrice"><br>
-                    <input type="submit" value="priceBook" class="btn btn-primary"> |
+                    <input type="submit" value="price Book" class="btn btn-primary"> |
                     <a href="{{ path('app_book_index') }}"
                        class="btn btn-primary">Reset</a>
                 </form>
@@ -27,10 +38,10 @@
                     <h4>Product Listing</h4>
                         <div class="row row-cols-1 row-cols-md-4 g-4">
                             {% for book in books %}
-                            <form action={{ path('app_cart') }} method="get">
+                            <form id="addToCart" action="{{ path('app_add_cart',{'id':book.id}) }}" method="get">
                                 <div class="col">
                                     <div class="card h-100">
-                                        <img class="card-img-top" src="{{ asset('images/logo.jpg') }}">
+                                        <img class="card-img-top" src="{{ asset('assets/images/logo.jpg') }}">
                                         <div class="card-body">
                                             <input type="hidden" name="idBook" value="{{ book.id }}">
                                             <h5 class="card-title">{{ book.bookName }}</h5>
@@ -39,12 +50,12 @@
                                         </div>
                                         <div  >
                                             <div class="d-flex mb-4" style="max-width: 200px">
-                                                <button class="btn btn-primary px-3 me-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" style="">
+                                                <button  class="btn btn-primary px-3 me-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" style="">
                                                     <i class="bi bi-dash"></i>
                                                 </button>
 
                                                 <div class="form-outline">
-                                                    <input id="form1" min="0" name="quantity" value="0" type="number" class="form-control active">
+                                                    <input id="form1" min="0" name="quantity" value="1" type="number" class="form-control active">
                                                     <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 55.2px;"></div><div class="form-notch-trailing"></div></div></div>
                                                 <label ></label>
                                                 <button class="btn btn-primary px-3 ms-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" style="">
@@ -55,18 +66,13 @@
                                         <div class="card-footer">
                                             <a href="{{ path('app_book_show', {'id': book.id}) }}"
                                                class="btn btn-primary">Show</a>
-{#                                            <input type="submit" value="Add Cart" class="btn btn-primary">#}
-                                            <button class="btn btn-primary" type="submit" name="cartElements">Add Cart</button>
+                                            <button id="form2" class="btn btn-primary" type="submit">add </button>
                                         </div>
                                     </div>
                                 </div>
-                                {{app.request.request.get('quantity')}}
-{#                                {% if app.request.get('submit') %}#}
-{#                                    <a>aaaa</a>#}
-{#                                    {{ app.request('quantity')}}#}
-{#                                {% endif %}#}
                             </form>
                             {% endfor %}
+
                         </div>
                     <div class="row mt-2">
                         <div style="display:flex;text-align:center;justify-content:center">
@@ -76,9 +82,12 @@
                                     {% for i in range(1, numOfPages) %}
                                         {% set style = app.request.get('page')==i ? "active" : "" %}
                                         <li class="page-item {{ style }}">
-                                            <a class="page-link"
-                                               href={{ path(app.request.attributes.get('_route'),
-                                                app.request.query.all|merge({'page': i})) }}>{{ i }}</a>
+{#                                            <input id="pageWeb" type="hidden" class="btn btn-primary"name="{{ page }}">#}
+                                                <a  class="page-link"
+                                                   href={{ path(app.request.attributes.get('_route'),
+                                                    app.request.query.all|merge({'page': i})) }}>{{ i }}</a>
+                                            <input type="hidden" name="pageWeb" value="{{ app.request.get('page')}}">
+
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -90,4 +99,9 @@
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/assets/js/test.js') }}"></script>
 {% endblock %}

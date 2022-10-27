@@ -56,7 +56,7 @@ class HomeController extends AbstractController
                 'controller_name' => 'HomeController',
                 'countOfBook' => $totalItemsBook,
                 'countOfAuthor' => $totalItems1,
-                'countOfCategory' => $totalItems2,
+                'countOfCategory' => $totalItems2
             ]);
         }
         else {
