@@ -20,15 +20,6 @@ class Order
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $quality;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $totalPrice;
 
     /**
      * @ORM\Column(type="date")
@@ -46,6 +37,11 @@ class Order
      */
     private $orderItems;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $totalPaymet;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -55,30 +51,6 @@ class Order
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getQuality(): ?int
-    {
-        return $this->quality;
-    }
-
-    public function setQuality(int $quality): self
-    {
-        $this->quality = $quality;
-
-        return $this;
-    }
-
-    public function getTotalPrice(): ?float
-    {
-        return $this->totalPrice;
-    }
-
-    public function setTotalPrice(float $totalPrice): self
-    {
-        $this->totalPrice = $totalPrice;
-
-        return $this;
     }
 
     public function getDateOrder(): ?\DateTimeInterface
@@ -131,6 +103,18 @@ class Order
                 $orderItem->setOrderB(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalPaymet(): ?float
+    {
+        return $this->totalPaymet;
+    }
+
+    public function setTotalPaymet(float $totalPaymet): self
+    {
+        $this->totalPaymet = $totalPaymet;
 
         return $this;
     }
