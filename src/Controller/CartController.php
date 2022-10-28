@@ -19,8 +19,6 @@ class CartController extends AbstractController
     public function addCart(Book $book,BookRepository $bookRepository, Request $request, LoggerInterface $logger)
     {
         $session = $request->getSession();
-
-
         $quantity = (int)$request->query->get('quantity');
         $cat = $request->query->get('category');
         $idBook = (int)$request->query->get('idBook');
@@ -33,20 +31,18 @@ class CartController extends AbstractController
         $numOfPages = ceil($totalItems/$pageSize);
         $logger->info($numOfPages);
         $logger->info("a".$page);
-
-        //check if cart is empty
         if (!$session->has('cartElements')) {
             //if it is empty, create an array of pairs (prod Id & quantity) to store first cart element.
             $cartElements = array($book->getId() => $quantity);
-            //save the array to the session for the first time.
             $session->set('cartElements', $cartElements);
+            //save the array to the session for the first time.
         } else {
             $cartElements = $session->get('cartElements');
             //Add new product after the first time. (would UPDATE new quantity for added product)
             $cartElements = array($book->getId() => $quantity) + $cartElements;
             //Re-save cart Elements back to session again (after update/append new product to shopping cart)
-            $session->set('cartElements', $cartElements);
         }
+        $session->set('cartElements', $cartElements);
         $c = count($cartElements);
 //        $logger->info($cartElements());
         $session->set('count', $c);
@@ -61,24 +57,40 @@ class CartController extends AbstractController
     {
         $book = new  Book();
         $session = $request->getSession();
-        $idBook= (int)$request->query->get('idOfBook');
-        $quantity = (int)$request->query->get('quantityAfter');
+        $idBook= (int)$request->query->get('idBook');
+        $quantity = (int)$request->query->get('quantity');
 
         $logger->info($quantity);
 
         $logger->info("id:".$idBook);
         $temQuery = $bookRepository->findInfoBook($idBook);
+        $session = $request->getSession();
         if ($session->has('cartElements')) {
             $cartElements = $session->get('cartElements');
-//            $cartElements = array($book->getId() => $quantity) + $cartElements;
-//            $session->set('cartElements', $cartElements);
         } else
             $cartElements = [];
-//        return new Response($cartElements);
+
         return $this->render('cart/index.html.twig', [
             'bookInfos'=>$temQuery->getResult(),
             'quantity'=>$cartElements,
         ]);
+//        return $this->json($cartElements);
+    }
+    /**
+     * @Route("/removeCart", name="app_remove_cart", methods={"GET"})
+     */
+    public function removeCar(Request $request, BookRepository $bookRepository, LoggerInterface $logger)
+    {
+        $session = $request->getSession();
+        $idBook= $request->query->get('id');
+        $logger->info($idBook);
+        if ($session->has('cartElements')) {
+            $cartElements = $session->get('cartElements');
+
+            unset($cartElements[$idBook]);
+            $cartElements = $session->set('cartElements', $cartElements);
+        }
+        return $this->redirectToRoute('app_review_cart',[],Response::HTTP_SEE_OTHER);
     }
 
 }

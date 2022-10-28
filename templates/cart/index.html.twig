@@ -7,72 +7,49 @@
         <div class="container h-100 py-5">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-10">
-                    {% for key,value in quantity %}
+{#                    <form action="{{ path(app_remove_cart) }}" method="get">#}
+                        {% for key,value in quantity %}
                         {% for bookInfo in bookInfos%}
-                            {% if bookInfo.id == key %}
+                        {% if bookInfo.id == key %}
                     <div class="card rounded-3 mb-4">
                         <div class="card-body p-4">
                             <div class="row d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                            <input type="hidden" name="idOfBook" value="{{ key }}">ID: {{ key}}<br>
-        {#                                    <a>bookIfo</a>#}
-        {#                                    <h6>ID: {{ key }}</h6>#}
-                                        </div>
-
-{#                                {% for bookInfo in bookInfos%}#}
-{#                                    {% if bookInfo.id == {{key}} %}#}
-                                        <div class="col-md-3 col-lg-3 col-xl-3">
-                                            <h4 >{{ bookInfo.bookName }}</h4>
-                                            <p class="lead fw-normal mb-2">Category: {{ bookInfo.category.name }}</p>
-                                            <p class="lead fw-normal mb-2">Author: {{ bookInfo.author.authorName }}</p>
-                                            <p class="lead fw-normal mb-2">Seller: {{ bookInfo.user.fullName}}</p>
-                                            <p class="lead fw-normal mb-2">Price: {{ bookInfo.price}}</p>
-                                        </div>
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-{#                                <form id="addToCart" action="{{ path('app_review_cart')}}" method="get">#}
+                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                    <input type="hidden" name="idBook" value="{{ bookInfo.id }}">ID: {{ bookInfo.id}}<br>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                    <h4 >{{ bookInfo.bookName }}</h4>
+                                    <p class="lead fw-normal mb-2">Category: {{ bookInfo.category.name }}</p>
+                                    <p class="lead fw-normal mb-2">Author: {{ bookInfo.author.authorName }}</p>
+                                    <p class="lead fw-normal mb-2">Seller: {{ bookInfo.user.fullName}}</p>
+                                    <p class="lead fw-normal mb-2">Price: {{ bookInfo.price}}</p>
+                                </div>
                                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                    <button class="btn btn-link px-2"
-                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                        <i class="bi bi-dash"></i>
-                                    </button>
-
-                                    <input id="form1" min="" name="quantityAfter" value="{{ value }}"  type="number"
-                                           class="form-control form-control-sm" />
-
-                                    <button class="btn btn-link px-2"
-                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                        <i class="bi bi-file-plus"></i>
-                                    </button>
+                                    <h3>Quantity</h3>
+                                    <input  min="" name="quantity" value="{{ value }}"  type="number"
+                                       class="form-control form-control-sm" />
                                 </div>
                                 <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                    <h5 class="mb-0">{{ value*bookInfo.price }}</h5>
+                                    <h5 class="mb-0">$ {{ value* bookInfo.price}}</h5>
                                 </div>
-{#                                </form>#}
-                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                    <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-                                </div>
+                                <form action="{{ path('app_remove_cart') }}" method="get">
+                                    <input type="hidden" value="{{ bookInfo.id }}" name="id">
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <button  class="btn btn-danger" type="submit">Remove <i class="bi bi-trash3"></i></button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                            {% endif %}
+                        {% endif %}
                         {% endfor %}
-                    {% endfor %}
+                        {% endfor %}
+{#                    </form>#}
                     <div class="card">
                         <div class="card-body">
                             <button type="button" class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
                         </div>
                     </div>
-                    <table>
-                        <tr>
-                            {% for key,value in quantity %}
-                                {{ key }} - {{ value }}
-                                <td>{{key|e }}</td>
-                                <td>{{ key|e }}</td>
-                            {% endfor %}
-                        </tr>
-
-                    </table>
 
                 </div>
             </div>
