@@ -9,9 +9,11 @@ use App\Repository\BookRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/book")
@@ -52,7 +54,7 @@ class BookController extends AbstractController
         $logger->info($idBook);
         $logger->info($priceBook);
         $logger->info($quantity);
-        $logger->info($user->getUserIdentifier());
+//        $logger->info($user->getUserIdentifier());
 
         $temQuery = $bookRepository->findAllPriceRange($minPrice, $maxPrice, $cat);
         $pageSize = 4;
@@ -91,9 +93,11 @@ class BookController extends AbstractController
 
         }
         else {
-            return $this->render('book/index.html.twig', [
-                'books' => [],
-
+            return $this->render('book/bookCus.html.twig',[
+                'books' => $tempQuery->getResult(),
+                'selectedCat' => $selectedCat,
+                'numOfPages' => $numOfPages,
+                'totalItem' => $totalItems
             ]);
         }
     }
@@ -102,7 +106,7 @@ class BookController extends AbstractController
     /**
      * @Route("/new", name="app_book_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, BookRepository $bookRepository, LoggerInterface $logger): Response
+    public function new(Request $request, BookRepository $bookRepository, LoggerInterface $logger, SluggerInterface $slugger): Response
     {
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
@@ -113,6 +117,20 @@ class BookController extends AbstractController
             return $this->redirectToRoute('app_login',[],Response::HTTP_SEE_OTHER);
         }
         elseif($form->isSubmitted() && $form->isValid() ) {
+            $bookImage = $form->get('Image')->getData();
+            if ($bookImage){
+                $originExt = pathinfo($bookImage->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename  = $slugger->slug($originExt);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$bookImage->guessExtension();
+                try {
+                    $bookImage->move(
+                        $this->getParameter('image_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $book->setImage($newFilename);
+            }
             $bookRepository->add($book, true);
 
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
@@ -120,7 +138,6 @@ class BookController extends AbstractController
         return $this->renderForm('book/new.html.twig', [
             'book' => $book,
             'form' => $form,
-
         ]);
     }
 
@@ -129,6 +146,10 @@ class BookController extends AbstractController
      */
     public function show(Book $book): Response
     {
+        $user = $this->getUser();
+        if (is_null($user)){
+            return $this->redirectToRoute('app_login',[],Response::HTTP_SEE_OTHER);
+        }
         return $this->render('book/show.html.twig', [
             'book' => $book,
         ]);

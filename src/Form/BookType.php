@@ -11,8 +11,10 @@ use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\Types\Collection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class BookType extends AbstractType
 {
@@ -31,10 +33,22 @@ class BookType extends AbstractType
                 'class'=>Author::class,
                 'choice_label'=>'authorName'
             ])
-//            ->add('owner',EntityType::class,[
-//                'class'=>BookController::class,
-//                'label'=>'ownerId'
-//            ])
+            ->add('Image', FileType::class, [
+                'label' => 'Book Thumbnail',
+                'mapped' => false,
+                'required' => false,
+//                'constraints' => [
+//                    new File([
+//                        'maxSize' => '1024k',
+//                        'mimeTypes' => [
+//                            'application/pdf',
+//                            'application/x-pdf',
+//                        ],
+//                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+//                    ])
+//                ],
+            ])
+
         ;
 
     }

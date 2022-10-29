@@ -41,7 +41,7 @@
                             <form id="addToCart" action="{{ path('app_add_cart',{'id':book.id}) }}" method="get">
                                 <div class="col">
                                     <div class="card h-100">
-                                        <img class="card-img-top" src="{{ asset('assets/images/logo.jpg') }}">
+                                        <img class="card-img-top" src="{{ asset('images/book/' ~ book.image) }}">
                                         <div class="card-body">
                                             <input type="hidden" name="idBook" value="{{ book.id }}">
                                             <h5 class="card-title">{{ book.bookName }}</h5>

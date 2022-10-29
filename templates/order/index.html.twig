@@ -9,18 +9,21 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Quality</th>
-                <th>TotalPrice</th>
-                <th>DateOrder</th>
-                <th>actions</th>
+                <th>Customer</th>
+                <th>Book Name</th>
+                <th>Quantity Of Order</th>
+                <th>Total Price</th>
+                <th>Date Order</th>
             </tr>
         </thead>
         <tbody>
         {% for order in orders %}
             <tr>
                 <td>{{ order.id }}</td>
-                <td>{{ order.quality }}</td>
-                <td>{{ order.totalPrice }}</td>
+                <td>{{ order.customer.fullName }}</td>
+                <td>#</td>
+                <td>#</td>
+                <td>$ {{ order.totalPaymet }}</td>
                 <td>{{ order.dateOrder ? order.dateOrder|date('Y-m-d') : '' }}</td>
                 <td>
                     <a href="{{ path('app_order_show', {'id': order.id}) }}">show</a>

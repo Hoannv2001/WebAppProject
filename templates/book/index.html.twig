@@ -35,6 +35,9 @@
                             {{book.category.name}}
                         </a>
                     </td>
+                    <td>
+                        <img class="card-img-top" src="{{ asset('images/book/' ~ book.image) }}" >
+                    </td>
                     <td>{{ book.price }}</td>
                     <td>{{ book.publisher }}</td>
                     {% if is_granted('ROLE_ADMIN')%}

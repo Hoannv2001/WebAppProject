@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\OrderItems;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,17 @@ class OrderItemsRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    public function selectInfoUser($orderB): Query
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('count(oI.orderB)')
+            ->from('App:OrderItems', 'oI')
+            ->where('oI.orderB LIKE :roles')
+            ->getParameter()
+
+        return $qb->getQuery();
     }
 
 //    /**

@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Entity\Order;
+use App\Entity\OrderItems;
 use App\Form\OrderType;
 use App\Repository\BookRepository;
+use App\Repository\OrderItemsRepository;
 use App\Repository\OrderRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,10 +23,19 @@ class OrderController extends AbstractController
     /**
      * @Route("/", name="app_order_index", methods={"GET"})
      */
-    public function index(OrderRepository $orderRepository): Response
+    public function index(OrderRepository $orderRepository,OrderItemsRepository $orderItems, LoggerInterface $logger): Response
     {
+        $idO = $orderRepository->findID();
+//        count($idO);
+//        array($idO);
+//        foreach ($idO as $item){
+//            $logger->info("a".$item);
+//        }
+//        $logger->info($idO);
+        $ii = $orderItems->selectInfoUser($idO);
         return $this->render('order/index.html.twig', [
             'orders' => $orderRepository->findAll(),
+            'ii'=>(int)$ii
         ]);
     }
 
@@ -84,6 +95,7 @@ class OrderController extends AbstractController
     {
         return $this->render('order/show.html.twig', [
             'order' => $order,
+//            'orderItems'=>$orderItems,
         ]);
     }
 
