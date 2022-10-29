@@ -45,8 +45,8 @@ class OrderItemsRepository extends ServiceEntityRepository
         $qb = $entityManager->createQueryBuilder();
         $qb->select('count(oI.orderB)')
             ->from('App:OrderItems', 'oI')
-            ->where('oI.orderB LIKE :roles')
-            ->getParameter()
+            ->where('oI.orderB LIKE :roles');
+//            ->getParameter();
 
         return $qb->getQuery();
     }
